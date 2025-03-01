@@ -1,4 +1,4 @@
-# Makefile for GPU Design Simulation
+# nano-gpu Makefile
 # Tools from OSS CAD Suite
 IVERILOG = iverilog
 VVP = vvp
