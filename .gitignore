@@ -8,6 +8,12 @@ gpu_sim
 # VCD waveform files
 *.vcd
 
+# Synthesis and other Yosys folders
+syn/
+img/
+dot/
+png/
+
 # Log files or temporary outputs
 *.log
 *.out
