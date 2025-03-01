@@ -1,0 +1,35 @@
+# Compiled simulation executables from Icarus Verilog
+cmd_dec_sim
+geo_sim
+frame_sim
+rast_sim
+gpu_sim
+
+# VCD waveform files
+*.vcd
+
+# Log files or temporary outputs
+*.log
+*.out
+
+# Yosys synthesis outputs
+*.blif
+*.edif
+*.json
+synth_*.sv
+
+# Backup files
+*~
+*.bak
+
+# macOS-specific files
+.DS_Store
+._*
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# Vim
+*.swp
+*.swo

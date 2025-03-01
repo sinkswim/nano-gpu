@@ -1,0 +1,43 @@
+[*]
+[*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
+[*] Sat Mar  1 16:34:07 2025
+[*]
+[dumpfile] "/Users/robert/repo/gpu/rasterizer_tb.vcd"
+[dumpfile_mtime] "Sat Mar  1 16:31:32 2025"
+[dumpfile_size] 2297
+[savefile] "/Users/robert/repo/gpu/tb/waves/rasterizer.gtkw"
+[timestart] 0
+[size] 1712 969
+[pos] -1 -1
+*-15.488058 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] rasterizer_tb.
+[sst_width] 253
+[signals_width] 169
+[sst_expanded] 1
+[sst_vpaned_height] 287
+@29
+rasterizer_tb.clk
+@28
+rasterizer_tb.reset
+@22
+rasterizer_tb.fb_addr[16:0]
+@24
+rasterizer_tb.fb_addr_tb[16:0]
+@28
+rasterizer_tb.select_test
+@24
+rasterizer_tb.fb_addr_sig[16:0]
+@22
+rasterizer_tb.fb_data[7:0]
+rasterizer_tb.fb_data_out[7:0]
+@28
+rasterizer_tb.fb_we
+@22
+rasterizer_tb.pixel_color[7:0]
+@28
+rasterizer_tb.pixel_valid
+@22
+rasterizer_tb.pixel_x[8:0]
+rasterizer_tb.pixel_y[8:0]
+[pattern_trace] 1
+[pattern_trace] 0
