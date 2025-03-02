@@ -10,9 +10,12 @@ gpu_sim
 
 # Synthesis and other Yosys folders
 syn/
-img/
 dot/
+
+# Image folders
+img/
 png/
+fb-dump/
 
 # Log files or temporary outputs
 *.log

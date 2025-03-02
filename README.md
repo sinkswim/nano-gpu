@@ -41,3 +41,9 @@ Synthesizing:
 A clean house is a happy house:
 
 ```make clean```
+
+## Additional Tools
+
+* frame_buffer_viz.py: Render frame buffer contents as a 320 by 240 grayscale image, such as
+
+![frame_buffer_viz](doc/figures/frame_buffer.png)

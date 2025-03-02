@@ -23,56 +23,85 @@ module frame_buffer_tb;
         forever #10 clk = ~clk;
     end
 
-    // Test procedure
+    // Initialize memory to 0 (black background)
+    initial begin
+        for (int i = 0; i < 76800; i++) begin
+            uut.mem[i] = 8'h00;
+        end
+    end
+
+    // Test procedure: Draw diagonal line, circle, and star
     initial begin
         // Initialize signals
         we = 0;
         addr = 0;
         data_in = 0;
 
-        // Reset/wait
+        // Wait for initialization
         #20;
 
-        // Test 1: Write color 0xFF (white) to (0,0) -> addr = 0
-        @(posedge clk);
-        we = 1;
-        addr = 0;           // (0,0)
-        data_in = 8'hFF;
-        @(posedge clk);
-        we = 0;             // Disable write
+        // 1. Draw diagonal line from (0,0) to (319,239)
+        begin
+            int x, y;
+            for (x = 0; x < 320; x++) begin
+                y = (x * 239) / 319;  // Scale y from 0 to 239
+                @(posedge clk);
+                we = 1;
+                addr = y * 320 + x;
+                data_in = 8'hFF;      // White
+                @(posedge clk);
+                we = 0;
+            end
+        end
 
-        // Test 2: Write color 0xAA to (1,1) -> addr = 1*320 + 1 = 321
-        @(posedge clk);
-        we = 1;
-        addr = 17'd321;     // (1,1)
-        data_in = 8'hAA;
-        @(posedge clk);
-        we = 0;
+        // 2. Draw circle in lower-left, center (80,160), radius 40
+        begin
+            int x, y, dx, dy, dist_sq;
+            for (y = 120; y <= 200; y++) begin  // y: 160-40 to 160+40
+                for (x = 40; x <= 120; x++) begin  // x: 80-40 to 80+40
+                    dx = x - 80;
+                    dy = y - 160;
+                    dist_sq = dx*dx + dy*dy;
+                    if (dist_sq <= 1600 && dist_sq >= 1444) begin  // r^2 = 40^2 = 1600, thickness ~2 pixels
+                        @(posedge clk);
+                        we = 1;
+                        addr = y * 320 + x;
+                        data_in = 8'hFF;  // White
+                        @(posedge clk);
+                        we = 0;
+                    end
+                end
+            end
+        end
 
-        // Test 3: Write color 0x55 to (319,239) -> addr = 239*320 + 319 = 76799
-        @(posedge clk);
-        we = 1;
-        addr = 17'd76799;   // (319,239)
-        data_in = 8'h55;
-        @(posedge clk);
-        we = 0;
+        // 3. Draw 5-pointed star in upper-right, center (240,80), size ~60x60
+        begin
+            int x, y, dx, dy;
+            real angle, r, star_factor;
+            for (y = 50; y <= 110; y++) begin  // y: 80-30 to 80+30
+                for (x = 210; x <= 270; x++) begin  // x: 240-30 to 240+30
+                    dx = x - 240;
+                    dy = y - 80;
+                    angle = $atan2(dy, dx) * 180 / 3.14159;  // Angle in degrees
+                    r = $sqrt(dx*dx + dy*dy);  // Distance from center
+                    if (r <= 30) begin  // Within bounding circle
+                        star_factor = $cos(5 * angle * 3.14159 / 180);  // 5-point modulation
+                        if (star_factor > 0.3 && r > 10) begin  // Outer star arms
+                            @(posedge clk);
+                            we = 1;
+                            addr = y * 320 + x;
+                            data_in = 8'hFF;  // White
+                            @(posedge clk);
+                            we = 0;
+                        end
+                    end
+                end
+            end
+        end
 
-        // Readback verification
+        // Dump memory and end simulation
         #20;
-        addr = 0;           // Check (0,0)
-        @(posedge clk);
-        $display("Addr 0 (0,0): Expected 0xFF, Got 0x%h", data_out);
-
-        addr = 17'd321;     // Check (1,1)
-        @(posedge clk);
-        $display("Addr 321 (1,1): Expected 0xAA, Got 0x%h", data_out);
-
-        addr = 17'd76799;   // Check (319,239)
-        @(posedge clk);
-        $display("Addr 76799 (319,239): Expected 0x55, Got 0x%h", data_out);
-
-        // End simulation
-        #20;
+        $writememh("img/fb-dump/frame_buffer.hex", uut.mem);
         $finish;
     end
 
